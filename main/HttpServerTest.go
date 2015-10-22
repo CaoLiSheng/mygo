@@ -39,6 +39,12 @@ func main() {
 			}
 		}
 
+//		w.WriteHeader(http.StatusMovedPermanently)
+//		w.Header().Set("Location", "http://192.168.2.212:10000/enrollment?a=b")
+//		w.Write(nil)
+
+		http.Redirect(w, r, "http://192.168.2.212:10000/enrollment", http.StatusFound)
+
 		fmt.Println(String(data))
 	});
 
