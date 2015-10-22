@@ -25,7 +25,23 @@ func (h Struct) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.Handle("/string", String("I'm a frayed knot."));
 	http.Handle("/struct", &Struct{Greeting:"Greeting", Punct:"Punct", Who:"Who"});
+	http.HandleFunc("/mobileconfig", func(w http.ResponseWriter, r *http.Request) {
+		data, buf := make([]byte, 0), make([]byte, 1024)
+
+		for {
+			n, err := r.Body.Read(buf)
+			if err == nil {
+				for _, v := range (buf[:n]) {
+					data = append(data, v)
+				}
+			} else {
+				break;
+			}
+		}
+
+		fmt.Println(String(data))
+	});
 
 	// your http.Handle calls here
-	log.Fatal(http.ListenAndServe("localhost:4000", nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:4000", nil))
 }
